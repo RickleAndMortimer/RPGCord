@@ -58,11 +58,11 @@ async def beginnerCampaign(ctx):
         max = await makeDecision(event_text, decision_text, 2, ctx)
         if max == 0:
             await ctx.channel.send(file=discord.File('Images/Map.jpg'))
-            ctx.channel.send(f"Your party follows the map. The map tells them to go through a graveyard. "
+            await ctx.channel.send(f"Your party follows the map. The map tells them to go through a graveyard. "
                              f"Surprisingly, no danger was there.")
             skip = True
         else:
-            ctx.channel.send("Your party does not use the map")
+            await ctx.channel.send("Your party does not use the map")
     else:
         await ctx.channel.send("You snuck around the goblins successfully.")
 
@@ -73,10 +73,10 @@ async def beginnerCampaign(ctx):
         decision_text = "What will the party do? 1. Fight the witch 2. Try to escape"
         max = await makeDecision(event_text, decision_text, 2, ctx)
         if max == 0:
-            ctx.channel.send(
+            await ctx.channel.send(
                 "Your party fights the witch. It was not an easy fight, but the witch succumbed to your combined strength. -30 HP for the whole party")
         elif max == 1:
-            ctx.channel.send(
+            await ctx.channel.send(
                 "Your party manages to flee, but the witch casta a spell right before you elude her vision. Everyone gets randomized HP")
 
     await asyncio.sleep(timer)
@@ -84,12 +84,12 @@ async def beginnerCampaign(ctx):
     decision_text = "What will the party do? 1. Fight the man 2. Ask for coin 3. Ask him to leave"
     max = await makeDecision(event_text, decision_text, 3, ctx)
     if max == 0:
-        ctx.channel.send("With one swift blow, you take out the king of the Lost Kingdom. It is done.")
+        await ctx.channel.send("With one swift blow, you take out the king of the Lost Kingdom. It is done.")
     elif max == 1:
-        ctx.channel.send(
+        await ctx.channel.send(
             "Seeing that the party has no coin, the king of the Lost Kingdom donates 500 coin to your party. As your party returns home, the king accepts the end of his monarchy. The End.")
     elif max == 2:
-        ctx.channel.send(
+        await ctx.channel.send(
             "The king of the Lost Kingdom at first vehemently refuses. However, after explaining that the monarchy is suffering because of his actions,"
             " the king of the Lost Kingdom leaves. No one dies and every lives a happy ending. The end")
 
