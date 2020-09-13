@@ -2,7 +2,6 @@ from discord.ext import commands
 import discord
 import asyncio
 
-
 @commands.command()
 async def beginnerCampaign(ctx):
     description = "The kingdom had begun to fail. The towers were crumbling little by little, the castle had lost its regal glow, and the royal guard’s numbers had begun to drop rapidly. "
@@ -12,8 +11,8 @@ async def beginnerCampaign(ctx):
     # PART ONE
     event_text = "The king, with his you all by his side, embarks onto the Forgotten Kingdom. You traverse a forest and find a small shack housing an old hermit. The hermit leaps forward to the party asking for some Bitcoin. "
     decision_text = "Will your party donate?\n" \
-                    " 1️⃣ Yes 2️⃣No"
-    max = await makeDecision(event_text, decision_text, ctx)
+                    " 1. Yes 2. No"
+    max = await makeDecision(event_text, decision_text, 2, ctx)
     # returns the index of the highest number in the poll
     # in other words, it chooses the most voted decision
     if max == 0:
@@ -25,7 +24,7 @@ async def beginnerCampaign(ctx):
     event_text = "As you traverse the forest, you encounter a goblin encampment blocking your route. The goblins inhabiting the area are small, skinny creatures armed with wooden sticks\n"
     decision_text = "How will your party approach the encampment?\n 1. Beat up the goblins 2. Attempt diplomacy 3. Sneak around the encampment\n"
 
-    poll = await makeDecision(event_text, decision_text, ctx)
+    max = await makeDecision(event_text, decision_text, 3, ctx)
 
     if max == 0:
         await ctx.channel.send(
@@ -38,22 +37,31 @@ async def beginnerCampaign(ctx):
 
 
 # FUNCTIONS
-async def makeDecision(event, decision, ctx):
+async def makeDecision(event, decision, num:int, ctx):
     # sends the decision and event text to the users
     await ctx.channel.send(event)
     message = await ctx.channel.send(decision)
     poll = []
+    emoji = ['1️⃣', '2️⃣', '3️⃣', '4️⃣']
+    eIndex = 0
+    while num > 0:
+        await message.add_reaction(emoji[eIndex])
+        eIndex += 1
+        num -= 1
+
     # waits 60 seconds, then counts up the reactions
-    await asyncio.sleep(60)
+    await asyncio.sleep(5)
     reactions = message.reactions
     for reaction in reactions:
+        print(f"reaction count:{reaction.count}")
         poll.append(reaction.count)
     index = 0
     maxIndex = 0
     max = 0
+    print(len(poll))
     while index < len(poll):
         if poll[index] > max:
             maxIndex = index
             max = poll[index]
         index += 1
-    return maxIndex
+    print(maxIndex)
