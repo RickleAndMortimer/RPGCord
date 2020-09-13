@@ -7,31 +7,39 @@ description = "The kingdom had begun to fail. The towers were crumbling little b
                   +"Because of this, the royal family took it upon themselves to go to the village that they’d ruled, and find those worthy to help repair what had begun to become known as “The Broken Kingdom.”
                   +"The king has disguised himself and seems no more than but a simple villager, but he seeks blacksmiths, archers, mages, and swordsmen."
 
-party = list()
-#add events to the story here
-event_text.append("")
-event_text.append ("")
-#add decisions to the story here
-
 
 #PART ONE
-"The king, with his you all by his side, embarks onto the Forgotten Kingdom. You traverse a forset and find a small shack housing an old hermit. The hermit leaps forward to the party asking for some Bitcoin. " +
-"Will your party accept?"
+event_text = "The king, with his you all by his side, embarks onto the Forgotten Kingdom. You traverse a forest and find a small shack housing an old hermit. The hermit leaps forward to the party asking for some Bitcoin. "
+decision_text = "Will your party donate? 1. Yes 2. No"
+poll = makeDecision("Will your party donate? 1. Yes 2. No")
 
-"1. Yes 2. No"
-#get poll information from the discord messages
-poll = {vote1, vote2, vote3, vote4}
 if poll.index(max(poll)) == 0:
-    a
-    random.choice(adventurers).name
-    "The old man says thank you, but one of your party members finds themselves feeling ill. -15 to " + random.choice(adventurers).name
-    
-else if poll.index(max(poll)) == 1:
-    b
-    "The old man "
+    adventurer = random.choice(adventurers)
+    sendOutcome("The old man says thank you, but one of your party members finds themselves feeling ill. -15 HP to " + adventurer.name)
+    adventurer.hp -= 15
+else  poll.index(max(poll)) == 1:
+    sendOutome("The old man quietly respects your choice, and scurries away in the bushes.")
+
+event_text = "As you traverse the forest, you encounter a goblin encampment blocking your route. The goblins inhabiting the area are small, skinny creatures armed with wooden sticks\n" +
+ + "How will your party approach the encampment\n" + 
+decision_text = "1. Beat up the goblins 2. Attempt diplomacy 3. Sneak around the encampment\n"
+
+poll = makeDecision(event_text, decision_text)
+
+
 #PART TWO
 
+#FUNCTIONS
+async def makeDecision(event,decision):
+#TODO: get reactions from discord
+    await ctx.channel.send(decision)
+    message = await ctx.channel.send(decision)
+    vote_1 = get(message.reactions, emoji="one emoji").count
+    vote_2 = get(message.reactions, emoji="two emoji").count
+    vote_3 = get(message.reactions, emoji="three emoji").count
+    vote_4 = get(message.reactions, emoji="four emoji").count
+    return {vote_1, vote_2, vote_3, vote_4}
 
-def makeDecision():
+async def sendOutcome(message):
+    await ctx.channel.send(message)
     
-
