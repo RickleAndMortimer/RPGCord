@@ -51,7 +51,8 @@ async def makeDecision(event, decision, num:int, ctx):
 
     # waits 60 seconds, then counts up the reactions
     await asyncio.sleep(5)
-    reactions = message.reactions
+    cacheMessage = await ctx.channel.fetch_message(message.id)
+    reactions = cacheMessage.reactions
     for reaction in reactions:
         print(f"reaction count:{reaction.count}")
         poll.append(reaction.count)
