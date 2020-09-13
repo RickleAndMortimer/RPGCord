@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import campaigns
+import campaign
 
 #a dictionary of users who in turn have a dictionary of character attributes
 userChar = {}
@@ -15,7 +15,7 @@ bot = commands.Bot(command_prefix= '!')
 
 
 #creates a character for the user
-@bot.command()
+@bot.command(brief="Creates a character for the user")
 async def create(ctx, name: str, prof: int):
         if ctx.author.name in userChar:
             await ctx.send("You already have a character!")
@@ -45,7 +45,7 @@ async def create(ctx, name: str, prof: int):
 
 
 #renames the character
-@bot.command()
+@bot.command(brief = "Renames your character")
 async def rename(ctx, newName: str):
     if ctx.author.name in userChar:
         character = userChar[ctx.author.name]
@@ -57,7 +57,7 @@ async def rename(ctx, newName: str):
 
 
 #rests the character back to full health
-@bot.command()
+@bot.command(brief = "Restores your character to full health")
 async def rest(ctx):
     if ctx.author.name in userChar:
         character = userChar[ctx.author.name]
@@ -72,7 +72,7 @@ async def rest(ctx):
 
 
 #gives the character a new profession
-@bot.command()
+@bot.command(brief = "Gives your character a new profession")
 async def join(ctx, prof: int):
     if ctx.author.name in userChar:
         character = userChar[ctx.author.name]
@@ -87,7 +87,7 @@ async def join(ctx, prof: int):
 
 
 #allows the user to leave their profession and resets their level
-@bot.command()
+@bot.command(brief = "Resets progress on your character and leaves your current occupation")
 async def leave(ctx):
     if ctx.author.name in userChar:
         character = userChar[ctx.author.name]
@@ -109,7 +109,7 @@ async def leave(ctx):
                        "Use the command !create [name] [profession (0-4)] to create one")
 
 ##CAMPAIGNS
-@bot.command()
+@bot.command(brief = "Starts the beginner campaign")
 async def startCampaign(ctx):
     await campaigns.beginnerCampaign(ctx)
 
@@ -128,4 +128,4 @@ def checkProfession(prof: int):
     elif prof == 4:
         return "Swordsman"
 
-bot.run(token)
+bot.run("NzU0NDEzNjIwNzk1OTMyODM1.X10Ybw.koN62TSU0_HYThnGLmEXQQla588")
