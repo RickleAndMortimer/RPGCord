@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import campaign
+import campaigns
 
 #a dictionary of users who in turn have a dictionary of character attributes
 userChar = {}
@@ -13,9 +13,24 @@ def read_token():
 token = read_token()
 bot = commands.Bot(command_prefix= '!')
 
+bot.remove_command('help')
+@bot.command()
+async def help(ctx):
+    await ctx.send("create - Creates a character for the user {create [name][profession(0-4)])\n"
+                   "rename - renames your character {rename [name]}\n"
+                   "rest - restores your character to full health {rest}\n"
+                   "join - allows your character to join a certain profession {join [0-4]}\n"
+                             "0 - No profession\n"
+                             "1 - Alchemist\n"
+                             "2 - Archer\n"
+                             "3 - Mage\n"
+                             "4 - Swordsman\n"
+                   "leave - Resets progress on your character and leaves your current occupation\n"
+                   "startCampaign - Begins a tutorial campaign\n"
+                   "joinAdventure - Allows your character to join Campaigns\n")
 
 #creates a character for the user
-@bot.command(brief="Creates a character for the user")
+@bot.command()
 async def create(ctx, name: str, prof: int):
         if ctx.author.name in userChar:
             await ctx.send("You already have a character!")
@@ -45,7 +60,7 @@ async def create(ctx, name: str, prof: int):
 
 
 #renames the character
-@bot.command(brief = "Renames your character")
+@bot.command()
 async def rename(ctx, newName: str):
     if ctx.author.name in userChar:
         character = userChar[ctx.author.name]
@@ -57,13 +72,14 @@ async def rename(ctx, newName: str):
 
 
 #rests the character back to full health
-@bot.command(brief = "Restores your character to full health")
+@bot.command()
 async def rest(ctx):
     if ctx.author.name in userChar:
         character = userChar[ctx.author.name]
         if character["profession"] == "No profession":
             await ctx.send("")
         else:
+            await ctx.channel.send(file=discord.File('Images/House.jpg'))
             character["health"] = 100
             await ctx.send(f"{character['name']} is fully rested!")
     else:
@@ -72,7 +88,7 @@ async def rest(ctx):
 
 
 #gives the character a new profession
-@bot.command(brief = "Gives your character a new profession")
+@bot.command()
 async def join(ctx, prof: int):
     if ctx.author.name in userChar:
         character = userChar[ctx.author.name]
@@ -87,7 +103,7 @@ async def join(ctx, prof: int):
 
 
 #allows the user to leave their profession and resets their level
-@bot.command(brief = "Resets progress on your character and leaves your current occupation")
+@bot.command()
 async def leave(ctx):
     if ctx.author.name in userChar:
         character = userChar[ctx.author.name]
@@ -98,6 +114,7 @@ async def leave(ctx):
             await ctx.send(f"You are about to abandon your {character['profession']} profession. This will reset your level to 0. Are you sure (!yes/!no)?")
             @bot.command()
             async def yes(ctx):
+                await ctx.channel.send(file=discord.File('Images/Satchel.jpg'))
                 await ctx.send(f"You have left the ways of the {character['profession']}")
                 character["profession"] = "No Profession"
             @bot.command()
@@ -109,12 +126,11 @@ async def leave(ctx):
                        "Use the command !create [name] [profession (0-4)] to create one")
 
 ##CAMPAIGNS
-@bot.command(brief = "Starts the beginner campaign")
+adventurers = []
+
+@bot.command()
 async def startCampaign(ctx):
     await campaigns.beginnerCampaign(ctx)
-
-
-
 
 def checkProfession(prof: int):
     if prof == 0:
@@ -128,4 +144,28 @@ def checkProfession(prof: int):
     elif prof == 4:
         return "Swordsman"
 
-bot.run("NzU0NDEzNjIwNzk1OTMyODM1.X10Ybw.koN62TSU0_HYThnGLmEXQQla588")
+##CAMPAIGNS
+adventurers = []
+
+async def injure(ctx, name, damage: int):
+    character = userChar[name]
+    character["health"] -= damage
+    ctx.send(f"{character['name']} took {damage} damage!")
+    if character["health"] >= 0:
+        ctx.send(f"Aw shucks! {character['name']} died!")
+        character["level"] = 0
+
+
+@bot.command()
+async def joinAdventure(ctx):
+    global userChar
+    if str(ctx.author.name) in userChar:
+        global adventurers
+        adventurers.append(ctx.author.name)
+        await ctx.send("You've joined the adventure!")
+    else:
+        await ctx.send("You haven't made a character yet\n "
+                       "Use the command !create [name] [profession (0-4)] to create one")
+
+
+bot.run(token)
