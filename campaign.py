@@ -37,10 +37,10 @@ async def beginnerCampaign(ctx):
             event_text = "Your party approached the goblins and, surprisingly, they weren't aggressive. In fact, they were very civil and fluent in their languages. Your party asks the goblins for a shortcut to the Forgotten Kingdom, and they respond by giving you a map")
 			decision_text = "Does your party wish to follow the map? 1. Yes 2. No"
 			max = await makeDecision(event_text, decision_text, 2, ctx)
-			if  == 0:
+			if max == 0:
 				ctx.channel.send("Your party follows the map. The map tells them to go through a graveyard. Surprisingly, no danger was there. However, at the end of the graveyard, " + adventurers[random(0, len(adventurers))].name + " disappeared.")
 				skip = True
-			if makeDecision(event_text, decision_text, ctx) == 1:
+			if max == 1:
 				ctx.channel.send("Your party does not use the map")
 	else:
         await ctx.channel.send("You snuck around the goblins successfully.")
@@ -48,7 +48,7 @@ async def beginnerCampaign(ctx):
 	if (skip == False):
 		event_text = "Going straight forward, you enter a swamp. The area is grimy and full of muck. A witch flies into your locations. Aggression can be felt from her precense"
 		decision_text = "What will the party do? 1. Fight the witch 2. Try to escape"
-		max = makeDecision(event_text, decision_text, ctx)
+		max = makeDecision(event_text, decision_text, 2, ctx)
 		if max == 0:
 			ctx.channel.send("Your party fights the witch. It was not an easy fight, but the witch succumbed to your combined strength. -30 HP for the whole party")
 		else max == 1:
@@ -56,7 +56,7 @@ async def beginnerCampaign(ctx):
 			
 	event_text = "Your party makes it to the Lost Kingdom! An impoverished but quaintly dressed figure approaches you. It is me, the king of the Lost Kingdom! he exclaims. "
 	decision_text = "What will the party do? 1. Fight the man 2. Ask for Bitcoin 3. Ask him to leave"
-	max = makeDecision(event_text, decision_text, ctx)	
+	max = makeDecision(event_text, decision_text, 3, ctx)	
 	if max == 0:
 		ctx.channel.send("With one swift blow, you take out the king of the Lost Kingdom. That's it. The game is done.")
 	elif max == 1:
