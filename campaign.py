@@ -41,7 +41,7 @@ async def makeDecision(event, decision, ctx):
     await message.add_reaction('2️⃣')
     await message.add_reaction('3️⃣')
     await message.add_reaction('4️⃣')
-    poll = list()
+    poll = []
     #waits 10 seconds, then counts up the reactions
     asyncio.sleep(10)
     reactions = message.reactions
