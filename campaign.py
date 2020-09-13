@@ -11,7 +11,7 @@ async def beginnerCampaign(ctx):
     #PART ONE
     event_text = "The king, with his you all by his side, embarks onto the Forgotten Kingdom. You traverse a forest and find a small shack housing an old hermit. The hermit leaps forward to the party asking for some Bitcoin. "
     decision_text = "Will your party donate? 1. Yes 2. No"
-    poll = makeDecision(event_text, decision_text, ctx)
+    poll = await makeDecision(event_text, decision_text, ctx)
     #returns the index of the highest number in the poll
     #in other words, it chooses the most voted decision
     if poll.index(max(poll)) == 0:
