@@ -168,4 +168,4 @@ async def joinAdventure(ctx):
                        "Use the command !create [name] [profession (0-4)] to create one")
 
 
-bot.run(token)
+bot.run(TOKEN)
